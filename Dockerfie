@@ -1,0 +1,12 @@
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y \
+    git \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/sahiltyagi4/OmniLearn.git
+WORKDIR /OmniLearn
+RUN pip3 install --no-cache-dir -r requirements.txt
+RUN chmod a+x scripts/*.sh
+CMD ["/bin/bash"]
