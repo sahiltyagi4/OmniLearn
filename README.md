@@ -51,16 +51,16 @@ computational standpoint.
 - Heterogeneity is introduced by varying the cpu-cores allocated to a container.
 - Dynamic heterogeneity simulations at various HLs in ResNet18, ResNet50, AlexNet, VGG11 and GPT-2 is implemented in ```pytorch.helper.dynamicbatching.DynamicHeterogeneityEmulator``` class.
   
-   | HL  | Method | <center>Container #1 CPU-cores | <center>Container #2 CPU-cores | <center>Container #3 CPU-cores | <center>Container #4 CPU-cores  |
-   |-----|--------|--------------------------------|--------------------------------|--------------------------------|---------------------------------|
-   | HL1 | <center>BSP    | <center>12                     | <center>12                     | <center>12                     | <center>12                      |
-   | HL1 | <center>ASP    | <center>10                     | <center>10                     | <center>10                     | <center>10                      |
-   | HL2 | <center>BSP    | <center>12                     | <center>12                     | <center>8                      | <center>16                      |
-   | HL2 | <center>ASP    | <center>8                      | <center>8                      | <center>8                      | <center>16                      |
-   | HL4 | <center>BSP    | <center>9                      | <center>9                      | <center>6                      | <center>24                      |
-   | HL4 | <center>ASP    | <center>10                     | <center>10                     | <center>4                      | <center>16                      |
-   | HL8 | <center>BSP    | <center>6                      | <center>6                      | <center>4                      | <center>32                      |
-   | HL8 | <center>ASP    | <center>4                      | <center>4                      | <center>4                      | <center>28                      |
+   | HL             | Method      | <center>Container #1 CPU-cores | <center>Container #2 CPU-cores | <center>Container #3 CPU-cores | <center>Container #4 CPU-cores  |
+   |----------------|-------------|--------------------------------|--------------------------------|--------------------------------|---------------------------------|
+   | $\textit{HL1}$ | <center>BSP | <center>12                     | <center>12                     | <center>12                     | <center>12                      |
+   | $\textit{HL1}$ | <center>ASP | <center>10                     | <center>10                     | <center>10                     | <center>10                      |
+   | $\textit{HL2}$ | <center>BSP | <center>12                     | <center>12                     | <center>8                      | <center>16                      |
+   | $\textit{HL2}$ | <center>ASP | <center>8                      | <center>8                      | <center>8                      | <center>16                      |
+   | $\textit{HL4}$ | <center>BSP | <center>9                      | <center>9                      | <center>6                      | <center>24                      |
+   | $\textit{HL4}$ | <center>ASP | <center>10                     | <center>10                     | <center>4                      | <center>16                      |
+   | $\textit{HL8}$ | <center>BSP | <center>6                      | <center>6                      | <center>4                      | <center>32                      |
+   | $\textit{HL8}$ | <center>ASP | <center>4                      | <center>4                      | <center>4                      | <center>28                      |
 
 - ```DynamicHeterogeneityEmulator``` works by allocating cpu-sets to 4 worker containers, as per the above table. Users can change the number of nodes or degree of heterogeneity with ```container_cpuconf``` dictionary.
 - To emulate dynamic heterogeneity across the 4 containers, execute ```dynamicbatching.py``` on the host server running the containers:
