@@ -6,12 +6,12 @@ Implementation of $\texttt{OmniLearn}$, published at _IEEE Transactions on Paral
 
 <img src="figures/omnilearn_design.jpg" alt="Description" style="width: 600px; height: auto;">
 
+</div>
+
 $\texttt{OmniLearn}$ overview: Initially, fast and slow workers (p, q) train on the same mini-batch $b_{p} = b_{q}$ (breadth of 
 ‘Compute’ block) that leads to stragglers (BSP) or staleness (ASP) as compute times $t_{p} < t_{q}$ (length of ‘Compute’). 
-Controller adjusts mini-batches to equalize compute times, i.e., $t_{p}^{'} \approx t_{p}^{'} : b_{p}^{'} > b_{q}^{'}$ since p > q from a 
-computational standpoint.
-
-</div>
+Controller adjusts mini-batches to equalize compute times, i.e., $t_{p}^{'} \approx t_{p}^{'}$ : $b_{p}^{'} > b_{q}^{'}$ 
+since p > q from a computational standpoint.
 
 ## Docker installation and container deployment
 - To emulate compute nodes with varying heterogeneity, install docker as follows:
