@@ -1,4 +1,4 @@
-import miscellaneous as misc
+from omnilearn_pytorch.helper import miscellaneous as misc
 
 from torch import nn, optim
 import torchvision.models as models

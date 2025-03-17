@@ -10,7 +10,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from torchvision.datasets.utils import download_url
 
-import miscellaneous as misc
+from omnilearn_pytorch.helper import miscellaneous as misc
 
 class Partition(object):
     def __init__(self, data, index):
@@ -67,39 +67,39 @@ class TrainingTestingDataset(object):
     def __init__(self, bsz, dataset_name, args, fetchtestdata=True):
         if dataset_name == 'cifar10':
             self.train_size = 50000
-            self.trainloader = cifar10Train(data_dir=args.data_dir, world_size=args.world_size, trainer_rank=args.rank,
+            self.trainloader = cifar10Train(data_dir=args.dir, world_size=args.world_size, trainer_rank=args.rank,
                                             train_bsz=bsz, seed=args.seed, bsp=args.bsp)
             if fetchtestdata:
-                self.testloader = cifar10Test(data_dir=args.data_dir, test_bsz=args.test_bsz, seed=args.seed)
+                self.testloader = cifar10Test(data_dir=args.dir, test_bsz=args.test_bsz, seed=args.seed)
 
         elif dataset_name == 'cifar100':
             self.train_size = 50000
-            self.trainloader = cifar100Train(data_dir=args.data_dir, world_size=args.world_size, trainer_rank=args.rank,
+            self.trainloader = cifar100Train(data_dir=args.dir, world_size=args.world_size, trainer_rank=args.rank,
                                              train_bsz=bsz, seed=args.seed, bsp=args.bsp)
             if fetchtestdata:
-                self.testloader = cifar100Test(data_dir=args.data_dir, test_bsz=args.test_bsz, seed=args.seed)
+                self.testloader = cifar100Test(data_dir=args.dir, test_bsz=args.test_bsz, seed=args.seed)
 
         elif dataset_name == 'food101':
             self.train_size = 75750
-            self.trainloader = food101Train(data_dir=args.data_dir, world_size=args.world_size,
+            self.trainloader = food101Train(data_dir=args.dir, world_size=args.world_size,
                                                trainer_rank=args.rank, train_bsz=bsz, seed=args.seed,
                                                bsp=args.bsp)
             if fetchtestdata:
-                self.testloader = food101Test(data_dir=args.data_dir, test_bsz=args.test_bsz, seed=args.seed)
+                self.testloader = food101Test(data_dir=args.dir, test_bsz=args.test_bsz, seed=args.seed)
 
         elif dataset_name == 'caltech256':
             self.train_size = 30000
-            self.trainloader = caltechTrain(data_dir=args.data_dir, bsz=bsz, seed=args.seed,
+            self.trainloader = caltechTrain(data_dir=args.dir, bsz=bsz, seed=args.seed,
                                                world_size=args.world_size, trainer_rank=args.rank, bsp=args.bsp)
             if fetchtestdata:
-                self.testloader = caltechTest(data_dir=args.data_dir, test_bsz=args.test_bsz, seed=args.seed)
+                self.testloader = caltechTest(data_dir=args.dir, test_bsz=args.test_bsz, seed=args.seed)
 
         elif dataset_name == 'places365':
             self.train_size = 1.8e6
-            self.trainloader = places365Train(data_dir=args.data_dir, world_size=args.world_size,
+            self.trainloader = places365Train(data_dir=args.dir, world_size=args.world_size,
                                               trainer_rank=args.rank, train_bsz=bsz, seed=args.seed, bsp=True)
             if fetchtestdata:
-                self.testloader = places365Test(data_dir=args.data_dir, test_bsz=args.test_bsz, seed=args.seed)
+                self.testloader = places365Test(data_dir=args.dir, test_bsz=args.test_bsz, seed=args.seed)
 
         else:
             raise ValueError('not a valid dataset name')

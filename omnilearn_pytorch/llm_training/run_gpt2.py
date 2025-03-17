@@ -1,7 +1,7 @@
 import argparse
 
-import pytorch.helper.miscellaneous as misc
-from pytorch.llm_training.gpt2_omnilearn import GPT2OmniLearnBSP
+import omnilearn_pytorch.helper.miscellaneous as misc
+from omnilearn_pytorch.llm_training.gpt2_omnilearn import GPT2OmniLearnBSP
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

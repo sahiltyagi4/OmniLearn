@@ -8,22 +8,21 @@ import torch
 import numpy as np
 import torch.distributed.rpc as rpc
 
-import pytorch.helper.miscellaneous as misc
-import pytorch.helper.data_partitioner as dp
-from pytorch.helper import models
-from pytorch.helper.dynamicbatching import DynamicHeterogeneityEmulator
+import omnilearn_pytorch.helper.miscellaneous as misc
+import omnilearn_pytorch.helper.data_partitioner as dp
+from omnilearn_pytorch.helper import models
+from omnilearn_pytorch.helper.dynamicbatching import DynamicHeterogeneityEmulator
 
 class ASPOmniLearnPS(object):
     def __init__(self, args):
+        print('GOING TO START ASP PARAM SERVER....')
         self.args = args
         self.logdir = args.dir
-        self.train_bsz = args.bsz
         self.model_name = args.model
         self.rank = args.rank
         self.worldsize = args.world_size
         # world-size comprises 1 PS and multiple workers
         self.num_workers = self.worldsize - 1
-        self.datadir = args.data_dir
         self.dataset_name = args.dataset
         self.determinism = args.determinism
         if torch.cuda.is_available():
@@ -35,7 +34,8 @@ class ASPOmniLearnPS(object):
                                      + '-' + str(self.rank) + '.log', level=logging.INFO)
 
         # initial worker batches supplied as comma-separated integers
-        self.bszlist = [int(bsz) for bsz in self.args.bszlist.split(',')]
+        self.bszlist = [int(bsz) for bsz in args.bszlist.split(',')]
+        self.train_bsz = self.bszlist[0]
         self.dataset_obj = dp.TrainingTestingDataset(bsz=self.train_bsz, dataset_name=self.dataset_name,
                                                      args=args, fetchtestdata=True)
         self.model_obj = models.get_model(model_name=self.model_name, determinism=self.determinism, args=args)
@@ -155,7 +155,6 @@ class ASPOmniLearnWorker(object):
         self.args = args
         self.ps_rref = ps_rref
         self.bszlist = args.bszlist
-        self.train_bsz = args.bsz
         self.test_bsz = args.test_bsz
         self.logdir = args.dir
         self.model_name = args.model
@@ -163,7 +162,6 @@ class ASPOmniLearnWorker(object):
         self.train_dir = args.train_dir
         self.rank = rank
         self.worldsize = args.world_size
-        self.datadir = args.data_dir
         self.dataset_name = args.dataset
         self.determinism = args.determinism
         self.train_freq = args.trainfreq
@@ -180,6 +178,9 @@ class ASPOmniLearnWorker(object):
         logging.basicConfig(filename=self.logdir + '/g' + str(self.rank) + '/' + self.model_name
                                      + '-' + str(self.rank) + '.log', level=logging.INFO)
 
+        # initial worker batches supplied as comma-separated integers
+        self.bszlist = [int(bsz) for bsz in args.bszlist.split(',')]
+        self.train_bsz = self.bszlist[self.rank - 1]
         self.cpu_logfile = os.path.join(self.logdir, 'cpu-' + str(self.rank - 1) + '.log')
         self.sync_mode = 'BSP' if args.bsp else 'ASP'
         self.dynamicHL = DynamicHeterogeneityEmulator(model_name=self.model_name, sync_mode=self.sync_mode,

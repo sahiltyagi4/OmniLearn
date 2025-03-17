@@ -9,10 +9,10 @@ import torch
 import torch.distributed as dist
 from torch._C._distributed_c10d import ReduceOp
 
-from pytorch.helper import data_partitioner as dp
-from pytorch.helper import models
-from pytorch.helper import miscellaneous as misc
-from pytorch.helper.dynamicbatching import DynamicHeterogeneityEmulator
+from omnilearn_pytorch.helper import data_partitioner as dp
+from omnilearn_pytorch.helper import models
+from omnilearn_pytorch.helper import miscellaneous as misc
+from omnilearn_pytorch.helper.dynamicbatching import DynamicHeterogeneityEmulator
 
 class BSPOmniLearn(object):
     def __init__(self, args):
@@ -26,9 +26,7 @@ class BSPOmniLearn(object):
         self.backend = args.backend
         self.init_method = args.init_method
         self.globalB = args.globalB
-        self.datadir = args.data_dir
         self.seed = args.seed
-        self.traindir = args.train_dir
         self.train_freq = args.trainfreq
         self.test_freq = args.testfreq
         self.top1acc, self.top5acc = None, None
@@ -42,14 +40,11 @@ class BSPOmniLearn(object):
 
         if self.init_method == 'sharedfile':
             sharedfile = 'file://' + args.shared_file
-            dist.init_process_group(backend=self.backend, init_method=sharedfile, rank=self.rank,
-                                    world_size=self.worldsize)
+            dist.init_process_group(backend=self.backend, init_method=sharedfile, rank=self.rank, world_size=self.worldsize)
         elif self.init_method == 'tcp':
             timeout = datetime.timedelta(seconds=60 * 60)
             tcp_addr = 'tcp://' + str(args.master_addr) + ':' + str(args.master_port)
-            args.tcp_addr = tcp_addr
-            dist.init_process_group(backend=self.backend, init_method=tcp_addr, rank=self.rank,
-                                    world_size=self.worldsize, timeout=timeout)
+            dist.init_process_group(backend=self.backend, init_method=tcp_addr, rank=self.rank, world_size=self.worldsize, timeout=timeout)
 
         logging.basicConfig(filename=self.logdir + '/g' + str(self.rank) + '/' + self.model_name + '-'
                                      + str(self.rank) + '.log', level=logging.INFO)

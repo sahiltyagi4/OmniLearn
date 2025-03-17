@@ -76,8 +76,9 @@ class CollectiveOps(object):
 
 def get_container_network_info(container_name, script_name='get_container_network.sh'):
     pth = Path(os.getcwd())
-    pth = Path(pth.parent.absolute())
-    script_pth = os.path.join(os.path.join(pth.parent.absolute(), 'scripts'), script_name)
+    # pth = Path(pth.parent.absolute())
+    pth = Path(pth.absolute())
+    script_pth = os.path.join(os.path.join(pth, 'scripts'), script_name)
     try:
         result = subprocess.run([script_pth, container_name], shell=True, check=True, text=True, capture_output=True)
         output_lines = result.stdout.strip().split("\n")

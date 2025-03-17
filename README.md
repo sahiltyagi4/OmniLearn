@@ -63,7 +63,8 @@ since p > q from a computational standpoint.
 
 ### Emulating heterogeneity across containers
 - Heterogeneity is introduced by varying the cpu-cores allocated to a container.
-- Dynamic heterogeneity simulations at various HLs in ResNet18, ResNet50, AlexNet, VGG11 and GPT-2 is implemented in ```pytorch.helper.dynamicbatching.DynamicHeterogeneityEmulator``` class.
+- Dynamic heterogeneity simulations at various HLs in ResNet18, ResNet50, AlexNet, VGG11 and GPT-2 is implemented 
+  in ```pytorch/helper/dynamicbatching/DynamicHeterogeneityEmulator``` class.
   
    | HL             | Method      | <center>Container #1 CPU-cores | <center>Container #2 CPU-cores | <center>Container #3 CPU-cores | <center>Container #4 CPU-cores  |
    |----------------|-------------|--------------------------------|--------------------------------|--------------------------------|---------------------------------|
@@ -117,12 +118,19 @@ since p > q from a computational standpoint.
 
 ### Launch training jobs
 
-- **BSP Training**: ```pytorch/dynamic_controller/run_omnilearn_BSP.py``` trains in a heterogeneity-aware manner
+- **Synchronous Training (BSP)**: ```pytorch/dynamic_controller/run_omnilearn_BSP.py``` trains in a heterogeneity-aware manner
   over a synchronous communication-model. The file uses ```--bsp``` argument for BSP which is used by the
-  ```data-partitioner.py``` and ```dynamicbatching.py```. <span style="color:magenta">Run omnilearnBSP.sh</span>
-- **ASP Training**: Specifies argument ```--no-bsp``` in ```pytorch/dynamic_controller/run_omnilearn_ASP.py```
-  for asynchronous training of deep networks. <span style="color:magenta">Run omnilearnASP.sh</span>
-
+  ```data-partitioner.py``` and ```dynamicbatching.py```. BSP-based OmniLearn is deployed by running 
+  ```scripts/omnilearnBSP.sh``` from the host server once the containers the running.
+- **Asynchronous Training (ASP)**: Specifies argument ```--no-bsp``` in ```pytorch/dynamic_controller/run_omnilearn_ASP.py```
+  for asynchronous training of deep networks. Launched with ```scripts/omnilearnASP.sh``` from the host server.
+    ```
+    cd scripts/
+    // synchronous training launched over 4 containers
+    ./omnilearnBSP.sh
+    // starts asynhchronous training over 5 containers: 1 parameter server and 4 workers
+    ./omnilearnASP.sh
+    ```
 
 ## Reference
 Please refer to the following to understand the current chosen configurations, implementation and design.

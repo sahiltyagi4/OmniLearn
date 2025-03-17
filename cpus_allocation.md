@@ -28,7 +28,7 @@ an additional 8-core parameter server while the latter runs in a decentralized m
 ## CPU configuration over 32 containers:
 
 - For ResNet18/AlexNet experiments across 32 worker containers in BSP training. We spawn these containers across 4 servers, each
-  eqipped with a 48-core CPU. To emulate $\textit{HL8}$, we allocate the workers as follows:
+  equipped with a 48-core CPU. To emulate $\textit{HL8}$, we allocate the workers as follows:
 
  | Worker ID  | Server ID | CPU-cores | CPU-set |
  |------------|-----------|-----------|---------|

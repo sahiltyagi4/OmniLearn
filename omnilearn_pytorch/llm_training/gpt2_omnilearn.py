@@ -14,8 +14,8 @@ import torch.distributed as dist
 from transformers import GPT2Tokenizer
 from torch._C._distributed_c10d import ReduceOp
 
-from pytorch.helper import models
-from pytorch.helper.dynamicbatching import DynamicHeterogeneityEmulator
+from omnilearn_pytorch.helper import models
+from omnilearn_pytorch.helper import DynamicHeterogeneityEmulator
 
 # Implements GPT-2 BSP training over OmniLearn
 
