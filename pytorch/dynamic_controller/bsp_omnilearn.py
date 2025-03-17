@@ -131,7 +131,7 @@ class BSPOmniLearn(object):
                     previous_epoch = epoch
                     # trigger batch-size adjustments based on workers' computation times
                     train_reloader = self.evaluate_bsz(epoch=epoch)
-                    # uncomment the following to trigger heterogeneity change at different epochs
+                    # trigger heterogeneity change at different epochs
                     self.dynamicHL.triggerHLadjustment(curr_epoch=epoch)
                     break
 

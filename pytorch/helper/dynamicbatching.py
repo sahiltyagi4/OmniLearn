@@ -1,4 +1,3 @@
-
 import os
 import time
 import logging
@@ -7,7 +6,7 @@ import subprocess
 class DynamicHeterogeneityEmulator(object):
 
     # model_name = resnet18/resnet50/vgg11/alexnet/gpt2
-    # sync_mode = ASP/BSP
+    # sync_mode = 'ASP' or 'BSP'
     def __init__(self, model_name, sync_mode, cpulog_file, id):
         self.model_name = model_name
         self.sync_mode = sync_mode
@@ -168,23 +167,32 @@ class DynamicHeterogeneityEmulator(object):
         return hl_routine
 
 
-def toggle_containers():
-    dir = os.getcwd()
-    cpufiles = ['cpu-0.log', 'cpu-1.log', 'cpu-2.log', 'cpu-3.log']
-    while True:
-        for cpulog in cpufiles:
-            if os.path.isfile(os.path.join(dir, cpulog)):
-                time.sleep(1)
-                f = open(os.path.join(dir, cpulog), 'r')
-                for line in f.readlines():
-                    if 'inflating/deflating container' in line:
-                        container = line.split()[2]
-                        cpuset = line.split()[5]
-                        subprocess.run(["docker", "update", "--cpuset-cpus", cpuset, container])
-                        print(f'setting docker container {container} to cpuset {cpuset}')
-                f.close()
-                os.remove(os.path.join(dir, cpulog))
+class HeterogeneityToggle(object):
+    def __init__(self, world_size, server_logdir='/'):
+        self.world_size = world_size
+        # self.server_logdir: directory on the main server (where containers are running)
+        # where cpu-log files of the worker containers persists
+        self.server_logdir = server_logdir
+
+    def toggle_containerCPUs(self):
+        cpufiles = []
+        for rank in range(self.world_size):
+            cpufiles.append('cpu-' + str(rank) + '.log')
+
+        while True:
+            for cpulog in cpufiles:
+                if os.path.isfile(os.path.join(self.server_logdir, cpulog)):
+                    time.sleep(1)
+                    f = open(os.path.join(self.server_logdir, cpulog), 'r')
+                    for line in f.readlines():
+                        if 'inflating/deflating container' in line:
+                            container = line.split()[2]
+                            cpuset = line.split()[5]
+                            subprocess.run(["docker", "update", "--cpuset-cpus", cpuset, container])
+                            print(f'setting docker container {container} to cpuset {cpuset}')
+                    f.close()
+                    os.remove(os.path.join(self.server_logdir, cpulog))
 
 if __name__ == '__main__':
-    print('going to track for container triggers for CPU throttling...')
-    toggle_containers()
+    print('going to track container logs for changes in HL...')
+    HeterogeneityToggle(world_size=1, server_logdir='/').toggle_containerCPUs()

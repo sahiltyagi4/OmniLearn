@@ -2,15 +2,16 @@ import logging
 import threading
 import math
 from time import perf_counter_ns
-
-import numpy as np
+import os
 
 import torch
+import numpy as np
 import torch.distributed.rpc as rpc
 
 import pytorch.helper.miscellaneous as misc
 import pytorch.helper.data_partitioner as dp
 from pytorch.helper import models
+from pytorch.helper.dynamicbatching import DynamicHeterogeneityEmulator
 
 class ASPOmniLearnPS(object):
     def __init__(self, args):
@@ -161,9 +162,6 @@ class ASPOmniLearnWorker(object):
         self.seed = args.seed
         self.train_dir = args.train_dir
         self.rank = rank
-        # worker rank can be from 1 to (world_size - 1), so log files can start from 0. just done for convenience
-        # when reading/writing files with same id across both bsp and asp
-        self.asp_rank = self.rank - 1
         self.worldsize = args.world_size
         self.datadir = args.data_dir
         self.dataset_name = args.dataset
@@ -181,6 +179,11 @@ class ASPOmniLearnWorker(object):
 
         logging.basicConfig(filename=self.logdir + '/g' + str(self.rank) + '/' + self.model_name
                                      + '-' + str(self.rank) + '.log', level=logging.INFO)
+
+        self.cpu_logfile = os.path.join(self.logdir, 'cpu-' + str(self.rank - 1) + '.log')
+        self.sync_mode = 'BSP' if args.bsp else 'ASP'
+        self.dynamicHL = DynamicHeterogeneityEmulator(model_name=self.model_name, sync_mode=self.sync_mode,
+                                                      cpulog_file=self.cpu_logfile, id=int(self.rank))
 
         self.dataset_obj = dp.TrainingTestingDataset(bsz=self.train_bsz, dataset_name=self.dataset_name,
                                                      args=args, fetchtestdata=True)
@@ -258,6 +261,7 @@ class ASPOmniLearnWorker(object):
                     self.train_loss = misc.AverageMeter()
                     prev_epoch = epoch
                     train_reloader = self.evaluate_bsz(epoch=epoch)
+                    self.dynamicHL.triggerHLadjustment(curr_epoch=epoch)
                     break
 
     def train_accuracy(self, epoch, input, label, output, loss):

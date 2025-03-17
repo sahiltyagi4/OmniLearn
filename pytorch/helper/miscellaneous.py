@@ -1,5 +1,7 @@
+import os
 import random
-from prettytable import PrettyTable
+from pathlib import Path
+import subprocess
 
 import numpy as np
 
@@ -70,3 +72,24 @@ class CollectiveOps(object):
         for param in model.parameters():
             dist.all_reduce(tensor=param.grad, op=ReduceOp.SUM, async_op=self.async_op)
             param.grad = param.grad
+
+
+def get_container_network_info(container_name, script_name='get_container_network.sh'):
+    pth = Path(os.getcwd())
+    pth = Path(pth.parent.absolute())
+    script_pth = os.path.join(os.path.join(pth.parent.absolute(), 'scripts'), script_name)
+    try:
+        result = subprocess.run([script_pth, container_name], shell=True, check=True, text=True, capture_output=True)
+        output_lines = result.stdout.strip().split("\n")
+        container_ip, container_iface = None, None
+        for line in output_lines:
+            if "Container IP Address:" in line:
+                container_ip = line.split(":")[1].strip()
+            elif "Container Network Interface:" in line:
+                container_iface = line.split(":")[1].strip()
+
+        return  container_ip, container_iface
+
+    except subprocess.CalledProcessError as e:
+        print("Error executing script:", e)
+        print("Script output (stderr):", e.stderr)

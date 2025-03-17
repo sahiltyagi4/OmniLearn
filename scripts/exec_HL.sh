@@ -22,6 +22,11 @@ else
     fi
 fi
 
-cd OmniLearn/pytorch
+PARENT_DIR="$(dirname "$PWD")"
+echo $PARENT_DIR
+cd $PARENT_DIR/pytorch
 
-python3 -m helper.dynamicbatching
+worldsize=$1
+server_logdir=$2
+
+python3 -m helper.dynamicbatching --world-size=$worldsize --server-logdir=$server_logdir
