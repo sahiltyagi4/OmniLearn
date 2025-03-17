@@ -94,7 +94,7 @@ since p > q from a computational standpoint.
     <img src="figures/dynHLroutineres50alexnet.jpg" alt="Description" style="width: 420px; height: 275px;">
   </div>
 
-- The specific core allocations allotted to each container in our experiments can be found [cpus_allocation.md](cpus_allocation.md).
+- The specific core allocations allotted to each container in our experiments can be found in [cpus_allocation.md](cpus_allocation.md).
 - The emulator triggers HLs for the above models (as well as for GPT-2 following the same trajectory as ResNet18)
   at different epochs as shown in the plots. Whenever a $\textit{HL}$ change is triggered, a container writes 
   the new CPU configuration to its corresponding ```cpu-**worker_rank**.log``` file. The ```HeterogeneityToggle```
