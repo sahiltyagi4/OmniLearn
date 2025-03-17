@@ -2,7 +2,7 @@
 
 # $\texttt{OmniLearn}$ : A Framework for Distributed Deep Learning over Heterogeneous Clusters
 
-Implementation of $\texttt{OmniLearn}$, accepted in _IEEE Transactions on Parallel and Distributed Systems ([TPDS](https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=71))_, 2025.
+Implementation of [$\texttt{OmniLearn}$](https://sahiltyagi4.github.io/files/omnilearn.pdf), accepted in _IEEE Transactions on Parallel and Distributed Systems ([TPDS](https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=71))_, 2025.
 
 <img src="figures/omnilearn_design.jpg" alt="Description" style="width: 550px; height: auto;">
 
@@ -133,7 +133,7 @@ since p > q from a computational standpoint.
     ```
 
 ## Reference
-Please refer to the following to understand the current chosen configurations, implementation and design.
+Please refer to the following or [_preprint_](https://sahiltyagi4.github.io/files/omnilearn.pdf) to understand the current chosen configurations, implementation and design.
 ````
 @article{TyagiOmniLearn2025,
          title={OmniLearn: A Framework for Distributed Deep Learning over Heterogeneous Clusters},
