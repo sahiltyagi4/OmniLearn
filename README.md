@@ -126,9 +126,9 @@ since p > q from a computational standpoint.
   for asynchronous training of deep networks. Launched with ```scripts/omnilearnASP.sh``` from the host server.
     ```
     cd scripts/
-    // synchronous training launched over 4 containers
+    // to launch synchronous training over 4 containers
     ./omnilearnBSP.sh
-    // starts asynhchronous training over 5 containers: 1 parameter server and 4 workers
+    // OR start asynhchronous training over 5 containers: 1 parameter server and 4 workers
     ./omnilearnASP.sh
     ```
 
