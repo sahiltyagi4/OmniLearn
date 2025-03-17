@@ -9,8 +9,8 @@ Implementation of $\texttt{OmniLearn}$, accepted in _IEEE Transactions on Parall
 </div>
 
 $\textbf{Problem}$: Nodes/devices with heterogeneous compute capabilities have varying performance costs. In 
-$\textit{synchronous}$ or BSP training, this may result in $\textit{straggler slowdown}$ as fast workers must 
-wait for slower ones to complete its updates. On the other hand, $\textit{asynchronous}$ or ASP training suffers
+$\textit{bulk-synchronous parallel}$ or BSP training, this may result in $\textit{straggler slowdown}$ as fast workers must 
+wait for slower ones to complete its updates. On the other hand, $\textit{asynchronous-parallel}$ or ASP training suffers
 from $\textit{staleness}$ in model updates as progress made by faster workers is exacerbated by slow nodes.
 
 $\textbf{Solution}$: Initially, fast and slow workers (p, q) train on the same mini-batch size $b_{p} = b_{q}$ (breadth of 
