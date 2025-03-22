@@ -135,9 +135,14 @@ since p > q from a computational standpoint.
 ## Reference
 Please refer to the following or [_preprint_](https://sahiltyagi4.github.io/files/omnilearn.pdf) to understand the current chosen configurations, implementation and design.
 ````
-@article{TyagiOmniLearn2025,
-         title={OmniLearn: A Framework for Distributed Deep Learning over Heterogeneous Clusters},
-         author={Sahil Tyagi and Prateek Sharma},
-         journal={IEEE Transactions on Parallel and Distributed Systems (TPDS)},
-         year={2025}}
+@ARTICLE{10932719,
+         author={Tyagi, Sahil and Sharma, Prateek},
+         journal={IEEE Transactions on Parallel and Distributed Systems}, 
+         title={OmniLearn: a Framework for Distributed Deep Learning over Heterogeneous Clusters}, 
+         year={2025},
+         volume={},
+         number={},
+         pages={1-15},
+         doi={10.1109/TPDS.2025.3553066}}
+
 ````
